@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/pages/login.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
 }
 
@@ -10,32 +11,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const HomePage(),
+      debugShowCheckedModeBanner: false,
+      home: const LoginPage(),
     );
   }
 }
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
 
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-
-  @override
-  Widget build(BuildContext context) {
-
-    return Scaffold(
-      body: Center(
-
-      ),
-    );
-  }
-}
