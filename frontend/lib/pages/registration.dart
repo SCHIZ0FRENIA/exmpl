@@ -8,9 +8,10 @@ class RegistrationPage extends StatefulWidget {
 }
 
 class _RegistrationPageState extends State<RegistrationPage> {
-  String _username = '';
-  String _password = '';
-  String _confirmPassword = '';
+  String username = '';
+  String password = '';
+  String confirmPassword = '';
+  bool isSubmitted = false;
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +37,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 TextField(
                   onChanged: (value) {
                     setState(() {
-                      _username = value;
+                      username = value;
                     });
                   },
                   decoration: InputDecoration(
                     hintText: 'Username',
+                    errorText: isSubmitted ? validateUsername(username) : null,
                     hintStyle: TextStyle(color: Color(0x88888888)),
                     filled: true,
                     fillColor: Colors.white,
@@ -56,11 +58,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   obscuringCharacter: '*',
                   onChanged: (value) {
                     setState(() {
-                      _password = value;
+                      password = value;
                     });
                   },
                   decoration: InputDecoration(
                     hintText: 'Password',
+                    errorText: isSubmitted ? validatePassword(password) : null,
                     hintStyle: TextStyle(color: Color(0x88888888)),
                     filled: true,
                     fillColor: Colors.white,
@@ -76,11 +79,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   obscuringCharacter: '*',
                   onChanged: (value) {
                     setState(() {
-                      _confirmPassword = value;
+                      confirmPassword = value;
                     });
                   },
                   decoration: InputDecoration(
                     hintText: 'Confirm Password',
+                    errorText: isSubmitted ? validateConfirmPassword(password, confirmPassword) : null,
                     hintStyle: TextStyle(color: Color(0x88888888)),
                     filled: true,
                     fillColor: Colors.white,
@@ -95,9 +99,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   width: double.infinity,
                   height: 55,
                   child: ElevatedButton(
-                    onPressed: () {
-
-                    },
+                    onPressed: handleRegistration,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF5599FF),
                       foregroundColor: Colors.white,
@@ -144,5 +146,56 @@ class _RegistrationPageState extends State<RegistrationPage> {
         ),
       ),
     );
+  }
+
+  void handleRegistration() {
+    setState(() {
+      isSubmitted = true;
+    });
+    final usernameError = validateUsername(username);
+    final passwordError = validatePassword(password);
+    final confirmPasswordError = validateConfirmPassword(password, confirmPassword);
+    if (usernameError == null && passwordError == null && confirmPasswordError == null) {
+
+      //ЛОГИКА РЕГИСТРАЦИИ
+
+      Navigator.pop(context);
+    }
+  }
+
+  validateUsername(String username) {
+    if (username == null || username.isEmpty) {
+      return 'Enter Username';
+    }
+    if (username.length < 3 || username.length > 15) {
+      return 'Username must be 3-15 characters';
+    }
+    return null;
+  }
+
+  validatePassword(String password) {
+    if (password == null || password.isEmpty) {
+      return 'Enter Password';
+    }
+    if (password.length < 3 || password.length > 10) {
+      return 'Password must be 3-10 characters';
+    }
+    if (!password.contains(RegExp(r'[0-9]'))) {
+      return 'Password must contain at least 1 digit';
+    }
+    if (!password.contains(RegExp(r'[A-Z]'))) {
+      return 'Password must contain at least 1 uppercase letter';
+    }
+    return null;
+  }
+
+  validateConfirmPassword(String password, String confirmPassword) {
+    if (confirmPassword == null || confirmPassword.isEmpty) {
+      return 'Enter Confirm Password';
+    }
+    if (password != confirmPassword) {
+      return 'Passwords do not match';
+    }
+    return null;
   }
 }
