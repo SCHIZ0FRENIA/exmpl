@@ -8,4 +8,4 @@ ADD . /app
 
 RUN uv sync --frozen
 
-CMD ["uv", "run", "python", "main.py"]
+CMD ["uv", "run", "python", "app/main.py"]
