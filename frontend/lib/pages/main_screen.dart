@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/widgets/message.dart';
+import 'package:frontend/widgets/chats.dart';
+import 'package:frontend/widgets/code_dialog.dart';
 
-class MainPage extends StatelessWidget {
+class MainPage extends StatefulWidget {
   const MainPage({super.key});
 
+  @override
+  State<MainPage> createState() => MainPageState();
+}
+
+class MainPageState extends State<MainPage> {
   final List<Map<String, dynamic>> messages = const [
     {
       'name': 'name 1',
@@ -103,9 +109,10 @@ class MainPage extends StatelessWidget {
                 type: MaterialType.transparency,
                 child: InkWell(
                   borderRadius: BorderRadius.circular(30),
-                  onTap: () {
-
-                  },
+                  onTap: () => showDialog(
+                    context: context,
+                    builder: (context) => const DialogExample(),
+                  ),
                   child: const Padding(
                     padding: EdgeInsets.all(10),
                     child: Icon(
