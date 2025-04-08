@@ -65,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
                   },
                   decoration: InputDecoration(
                     hintText: 'Password',
-                    errorText: isSubmitted ? validateUsername(password) : null,
+                    errorText: isSubmitted ? validatePassword(password) : null,
                     hintStyle: TextStyle(color: Color(0x88888888)),
                     filled: true,
                     fillColor: Colors.white,
