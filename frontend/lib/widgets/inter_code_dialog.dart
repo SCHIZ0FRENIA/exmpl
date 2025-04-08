@@ -104,6 +104,12 @@ class InterDialogExampleState extends State<InterDialogExample> {
     if (code == null || code.isEmpty) {
       return 'Enter code';
     }
+    if (code.length != 6 ) {
+      return 'Code must be 6 characters';
+    }
+    if (!RegExp(r'^[0-9]+$').hasMatch(code)) {
+      return 'Code must contain only digits';
+    }
     return null;
   }
 }
