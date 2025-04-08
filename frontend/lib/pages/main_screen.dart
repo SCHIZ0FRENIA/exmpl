@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/model/message.dart';
+import 'package:frontend/widgets/message.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({super.key});
@@ -107,11 +107,11 @@ class MainPage extends StatelessWidget {
 
                   },
                   child: const Padding(
-                    padding: EdgeInsets.all(15),
+                    padding: EdgeInsets.all(10),
                     child: Icon(
-                      Icons.mark_as_unread_sharp,
+                      Icons.qr_code_2,
                       color: Colors.white,
-                      size: 28,
+                      size: 38,
                     ),
                   ),
                 ),

@@ -10,8 +10,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  String _username = '';
-  String _password = '';
+
+  String username = '';
+  String password = '';
+  bool isSubmitted = false;
 
   @override
   Widget build(BuildContext context) {
@@ -37,11 +39,12 @@ class _LoginPageState extends State<LoginPage> {
                 TextField(
                   onChanged: (value) {
                     setState(() {
-                      _username = value;
+                      username = value;
                     });
                   },
                   decoration: InputDecoration(
                     hintText: 'Username',
+                    errorText: isSubmitted ? validateUsername(username) : null,
                     hintStyle: TextStyle(color: Color(0x88888888)),
                     filled: true,
                     fillColor: Colors.white,
@@ -57,11 +60,12 @@ class _LoginPageState extends State<LoginPage> {
                   obscuringCharacter: '*',
                   onChanged: (value) {
                     setState(() {
-                      _password = value;
+                      password = value;
                     });
                   },
                   decoration: InputDecoration(
                     hintText: 'Password',
+                    errorText: isSubmitted ? validateUsername(password) : null,
                     hintStyle: TextStyle(color: Color(0x88888888)),
                     filled: true,
                     fillColor: Colors.white,
@@ -76,14 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                   width: double.infinity,
                   height: 55,
                   child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MainPage(),
-                        ),
-                      );
-                    },
+                    onPressed: handleSignIn,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF5599FF),
                       foregroundColor: Colors.white,
@@ -135,5 +132,38 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  void handleSignIn() {
+    setState(() {
+      isSubmitted = true;
+    });
+    final usernameError = validateUsername(username);
+    final passwordError = validatePassword(password);
+    if (usernameError == null && passwordError == null) {
+
+      //ЛОГИКА АВТОРИЗАЦИИ
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MainPage(),
+        ),
+      );
+    }
+  }
+
+  validateUsername(String username) {
+    if (username == null || username.isEmpty) {
+      return 'Enter your Username';
+    }
+    return null;
+  }
+
+  validatePassword(String password) {
+    if (password == null || password.isEmpty) {
+      return 'Enter your Password';
+    }
+    return null;
   }
 }
