@@ -1,36 +1,49 @@
 version: '3.8'
 
 services:
-  postgres:
-    image: postgres:14
-    environment:
-      POSTGRES_DB: mydb
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-    volumes:
-      - pgdata:/var/lib/postgresql/data
+    postgres:
+        image: postgres
+        environment:
+            POSTGRES_DB: mydb
+            POSTGRES_USER: tester
+            POSTGRES_PASSWORD: 12341234
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+        networks:
+            - default
 
-  python_server:
-    build: ./python-server
-    depends_on:
-      - postgres
-    environment:
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_NAME: mydb
-      DB_USER: user
-      DB_PASSWORD: password
-    expose:
-      - "8000"
+    python_server:
+        build: 
+            context: ./python-server
+            dockerfile: Dockerfile
+        networks:
+            - default
+        expose:
+            - 5000
+        environment:
+            - DATABASE_HOST=postgres
+            - DATABASE_NAME=mydb
+            - DATABASE_USER=tester
+            - DATABASE_PASSWORD=12341234
 
-  haproxy:
-    image: haproxy:2.4
-    volumes:
-      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
-    ports:
-      - "3000:3000"
-    depends_on:
-      - python_server
+    proxy:
+        image: haproxy
+        volumes:
+            - ./haproxy:/haproxy-override
+            - ./haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+        links:
+            - python_server
+        networks:
+            - default
+        ports:
+            - "80:80"
+            - "70:70" # user:pass
+        depends_on:
+            - python_server
 
 volumes:
-  pgdata:
+  postgres_data:
+
+networks:
+    default:
+        driver: bridge
