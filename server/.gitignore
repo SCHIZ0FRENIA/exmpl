@@ -1,1 +1,3 @@
-python-project/.venv
+python-server/.venv
+python-server/app/uv.lock
+python-server/app/__pycache__/
